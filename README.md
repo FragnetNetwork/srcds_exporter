@@ -1,10 +1,4 @@
-# NodeJs SRCDS Prometheus exporter
-
-Works (or should work) with the following servers :
-
-* Working :
-    * CSGO
-    * GMod
+# NodeJs CSGO Prometheus exporter
 
 ## How to install
 
@@ -14,9 +8,9 @@ Works (or should work) with the following servers :
 2. Enter the srcds_exporter directory and run `npm i`, this will install all required dependencies
 3. Start the script with node : `node index.js`, you can create a service or run it in a screen to keep it active in background
 
-### Method 2 : With docker
+### Method 2 : With docker (coming soon)
 
-`docker run -d -p <external port>:9591 --name srcds_exporter FragnetNetwork/srcds_exporter:latest`
+`docker run -d -p <external port>:9591 --name csgo_exporter FragnetNetwork/csgo_exporter:latest`
 
 ## Configure Prometheus
 
@@ -25,7 +19,7 @@ Add the following configuration to Prometheus static configuration :
 ```
 - job_name: 'srcds'
     static_configs:
-      - targets: ["<ip>:<port>:<rconpassword>:<game>"]
+      - targets: ["<ip>:<port>:<rconpassword>"]
 
 
     relabel_configs:
@@ -41,32 +35,16 @@ Add the following configuration to Prometheus static configuration :
         regex: ".+:.+:(.+):.+"
         replacement: "$1"
         target_label: __param_password
-      - source_labels: [__address__]
-        regex: ".+:.+:.+:(.+)"
-        replacement: "$1"
-        target_label: __param_game
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
         replacement: <IP>:<port> # Real exporter's IP:Port
 ```
 
-Values for `game` field :
-
-| Game   |      Value      |
-|:----------:|:-------------:|
-| CS:GO |  csgo |
-
 ## How to access
 
 If you want to see what the exporter returns, you can access :
  
- `http://<ip>:9591/metrics?ip=<srcds ip>&port=<srcds port>&password=<rcon password>&game=<game>`
- 
-## Grafana dashboard
-
-Is there a Grafana dashboard available ? Of course!
-
-**CSGO** : https://grafana.com/grafana/dashboards/11333
+ `http://<ip>:9591/metrics?ip=<srcds ip>&port=<srcds port>&rconPassword=<rcon password>`
 
 
