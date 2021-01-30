@@ -48,7 +48,6 @@ export default {
 		statusLine.shift();
 		statusLine = statusLine[0].split(/\s+/);
 		statusLine.shift();
-		console.log(statusLine);
 		return statusLine;
 	},
 	setStatsMetrics(response, game) {
